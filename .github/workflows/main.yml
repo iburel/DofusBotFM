@@ -8,53 +8,69 @@ jobs:
   Release:
     name: Release
     runs-on: windows-latest
+    env:
+      CMAKE_BUILD_DIR: ${{ github.workspace }}/build
+
     steps:
+      - uses: lukka/get-cmake@latest
+
       # Checkout
       - name: Checkout repository
         uses: actions/checkout@v2
 
+      - name: Generate
+        run: |
+          mkdir -p "${{ env.CMAKE_BUILD_DIR }}"
+          cmake -B "${{ env.CMAKE_BUILD_DIR }}" -GNinja
+
       # Build
       - name: Build
         run: |
-          mkdir build
-          cd build
-          cmake ..
-          cmake --build . --config Release
+          cmake --build "${{ env.CMAKE_BUILD_DIR }}" --config Release
 
       # Tests
       - name: Tests
         run: |
-          cd Build
-          ctest
+          ctest --test-dir "${{ env.CMAKE_BUILD_DIR }}"
 
       # Output
       - uses: actions/upload-artifact@v2
         with:
           name: Release
-          path: build/Release/DofusBotFM.exe
+          path: ${{ env.CMAKE_BUILD_DIR }}/DofusBotFM.exe
           
   Debug:
     name: Debug
     runs-on: windows-latest
+    env:
+      CMAKE_BUILD_DIR: ${{ github.workspace }}/build
+    
+
     steps:
+      - uses: lukka/get-cmake@latest
+
       # Checkout
       - name: Checkout repository
         uses: actions/checkout@v2
 
+
+
+      - name: Generate
+        run: |
+          mkdir -p "${{ env.CMAKE_BUILD_DIR }}"
+          cmake -B "${{ env.CMAKE_BUILD_DIR }}" -GNinja
+
       # Build
       - name: Build
         run: |
-          mkdir build
-          cd build
-          cmake ..
-          cmake --build . --config Debug
+          cmake --build "${{ env.CMAKE_BUILD_DIR }}" --config Debug
 
       # Tests and Coverage
       - name: Tests and Coverage
         run: |
             choco install OpenCppCoverage -y
             $env:path += ";C:\Program Files\OpenCppCoverage"
-            OpenCppCoverage.exe --sources DofusBotFM\src\ --export_type cobertura:coverage.xml .\build\test\Debug\DBFTests.exe
+            OpenCppCoverage.exe --sources DofusBotFM\src\ --export_type cobertura:coverage.xml ${{ env.CMAKE_BUILD_DIR }}\test\DBFTests.exe
 
       # Upload Coverage
       - name: Upload Report to Codecov
@@ -68,4 +84,4 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           name: Debug
-          path: build/Debug/DofusBotFM.exe
+          path: ${{ env.CMAKE_BUILD_DIR }}/DofusBotFM.exe
