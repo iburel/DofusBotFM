@@ -44,7 +44,7 @@ foreach(ENUM_JSON ${ENUM_JSONS})
         DEPENDS ${ENUM_JSON} ${SCRIPT_DEPENDENCIES}
         COMMAND python ${ENUM_GENERATOR} ${ENUM_JSON} ${GENERATED_SOURCES_FOLDER}
         COMMENT "Generating ${HEADER_OUT} and ${CPP_OUT} from ${ENUM_JSON}")
-endforeach(PS_SHADER)
+endforeach(ENUM_JSON)
 
 target_sources(
     DBFLib
