@@ -68,7 +68,7 @@ jobs:
         run: |
             choco install OpenCppCoverage -y
             $env:path += ";C:\Program Files\OpenCppCoverage"
-            OpenCppCoverage.exe --sources DofusBotFM\src\ --export_type cobertura:coverage.xml -- ${{ env.CMAKE_BUILD_DIR }}\test\Debug\DBFTests.exe
+            OpenCppCoverage.exe --verbose --sources DofusBotFM\src\ --export_type cobertura:coverage.xml -- ${{ env.CMAKE_BUILD_DIR }}\test\Debug\DBFTests.exe
 
       # Upload Coverage
       - name: Upload Report to Codecov
