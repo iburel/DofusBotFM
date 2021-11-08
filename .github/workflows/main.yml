@@ -9,7 +9,7 @@ jobs:
     name: Release
     runs-on: windows-latest
     env:
-      CMAKE_BUILD_DIR: ${{ github.workspace }}/build
+      CMAKE_BUILD_DIR: ${{ github.workspace }}\build
 
     steps:
       - uses: lukka/get-cmake@latest
@@ -43,7 +43,7 @@ jobs:
     name: Debug
     runs-on: windows-latest
     env:
-      CMAKE_BUILD_DIR: ${{ github.workspace }}/build
+      CMAKE_BUILD_DIR: ${{ github.workspace }}\build
     
 
     steps:
