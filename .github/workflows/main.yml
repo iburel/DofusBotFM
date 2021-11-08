@@ -53,8 +53,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-
-
       - name: Generate
         run: |
           mkdir -p "${{ env.CMAKE_BUILD_DIR }}"
@@ -70,7 +68,7 @@ jobs:
         run: |
             choco install OpenCppCoverage -y
             $env:path += ";C:\Program Files\OpenCppCoverage"
-            OpenCppCoverage.exe --sources DofusBotFM\src\ --export_type cobertura:coverage.xml ${{ env.CMAKE_BUILD_DIR }}\test\DBFTests.exe
+            OpenCppCoverage.exe --sources DofusBotFM\src\ --export_type cobertura:coverage.xml -- ${{ env.CMAKE_BUILD_DIR }}\test\DBFTests.exe
 
       # Upload Coverage
       - name: Upload Report to Codecov
