@@ -56,7 +56,7 @@ jobs:
       - name: Generate
         run: |
           mkdir -p "${{ env.CMAKE_BUILD_DIR }}"
-          cmake -B "${{ env.CMAKE_BUILD_DIR }}" -GNinja
+          cmake -B "${{ env.CMAKE_BUILD_DIR }}"
 
       # Build
       - name: Build
@@ -68,7 +68,7 @@ jobs:
         run: |
             choco install OpenCppCoverage -y
             $env:path += ";C:\Program Files\OpenCppCoverage"
-            OpenCppCoverage.exe --sources DofusBotFM\src\ --export_type cobertura:coverage.xml -- ${{ env.CMAKE_BUILD_DIR }}\test\DBFTests.exe
+            OpenCppCoverage.exe --sources DofusBotFM\src\ --export_type cobertura:coverage.xml -- ${{ env.CMAKE_BUILD_DIR }}\test\Debug\DBFTests.exe
 
       # Upload Coverage
       - name: Upload Report to Codecov
