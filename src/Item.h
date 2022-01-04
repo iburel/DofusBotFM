@@ -31,8 +31,15 @@ public:
     Item(const std::string& jsonFile);
 
     const StatLine& GetStat(Stat stat) const;
+    const std::map<Stat, StatLine>& GetStats() const;
+    float GetTotalDensity() const;
+
     void UpdateStat(Stat stat, float value);
     void UpdateStats(const std::map<Stat, float>& stats);
+
+    float GetFreeDensity() const;
+    float UpdateFreeDensity(float value) const;
+
     nm::json ToJson() const;
 
     auto operator<=>(const Item& item) const = default;
@@ -44,6 +51,8 @@ public:
 
 private:
     std::map<Stat, StatLine> m_Stats;
+    float m_TotalDensity = 0.f;
+    float m_FreeDensity = 0.f;
 };
 
 } // namespace DBF

@@ -127,6 +127,10 @@ Item::Item(const std::map<Stat, StatLine>& stats) : m_Stats(stats)
         const auto& current = statLine.current;
 
         ::TestStatLineValidity(stat, min, max, current);
+
+        if (current > 0) {
+            m_TotalDensity += GetStatDensity(stat) * current;
+        }
     }
 }
 
@@ -151,6 +155,16 @@ const Item::StatLine& Item::GetStat(Stat stat) const
     return statLine;
 }
 
+const std::map<Stat, Item::StatLine>& Item::GetStats() const
+{
+    return m_Stats;
+}
+
+float Item::GetTotalDensity() const
+{
+    return m_TotalDensity;
+}
+
 void Item::UpdateStat(Stat stat, float value)
 {
     const auto it = m_Stats.find(stat);
@@ -167,7 +181,13 @@ void Item::UpdateStat(Stat stat, float value)
     auto& current = statLine.current;
 
     ::TestStatLineValidity(stat, min, max, current + value);
+
     current += value;
+
+    if (current > 0) {
+        float density = std::min(current, value);
+        m_TotalDensity += GetStatDensity(stat) * density;
+    }
 }
 
 void Item::UpdateStats(const std::map<Stat, float>& stats)

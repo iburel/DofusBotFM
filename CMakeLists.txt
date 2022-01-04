@@ -66,6 +66,8 @@ endforeach(ENUM_JSON)
 target_sources(
     DBFLib
     PRIVATE
+        "${CMAKE_CURRENT_SOURCE_DIR}/src/DummyRuneApplication.h"
+        "${CMAKE_CURRENT_SOURCE_DIR}/src/DummyRuneApplication.cpp"
         "${CMAKE_CURRENT_SOURCE_DIR}/src/FM.h"
         "${CMAKE_CURRENT_SOURCE_DIR}/src/FM.cpp"
         "${CMAKE_CURRENT_SOURCE_DIR}/src/Item.h"

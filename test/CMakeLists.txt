@@ -13,6 +13,7 @@ add_executable(DBFTests)
 target_sources(
     DBFTests
     PRIVATE
+        "${CMAKE_CURRENT_SOURCE_DIR}/DummyRuneApplicationTest.cpp"
         "${CMAKE_CURRENT_SOURCE_DIR}/FMTest.cpp"
         "${CMAKE_CURRENT_SOURCE_DIR}/ItemTest.cpp"
         "${CMAKE_CURRENT_SOURCE_DIR}/RunePropertiesTest.cpp"

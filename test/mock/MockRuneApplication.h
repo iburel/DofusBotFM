@@ -6,13 +6,10 @@
 
 #include "Stat.h"
 #include "Rune.h"
+#include "Item.h"
 #include "RuneApplicationInterface.h"
 
 class MockRuneApplication : public DBF::RuneApplicationInterface {
 public:
-    MOCK_METHOD(
-        (std::map<DBF::Stat, float>),
-        ApplyRune,
-        (const DBF::Rune& rune),
-        (final));
+    MOCK_METHOD(void, ApplyRune, (DBF::Item* item, const DBF::Rune& rune), (final));
 };

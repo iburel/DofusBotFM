@@ -33,9 +33,7 @@ void FM::Run()
 
             while (m_Item.GetStat(stat).current < value) {
                 const auto& rune = GetStatRunes(stat)[0];
-                const auto statsChanges =
-                    m_RuneApplicationInterface->ApplyRune(rune);
-                m_Item.UpdateStats(statsChanges);
+                m_RuneApplicationInterface->ApplyRune(&m_Item, rune);
             }
         }
 

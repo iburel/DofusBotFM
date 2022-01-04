@@ -74,18 +74,18 @@ TEST(FM, Run_BasicItem)
         };
 
         auto runeApplication = std::make_shared<MockRuneApplication>();
-        ON_CALL(*runeApplication, ApplyRune(testing::_))
-            .WillByDefault([](const DBF::Rune& rune) {
+        ON_CALL(*runeApplication, ApplyRune(testing::_, testing::_))
+            .WillByDefault([](DBF::Item* item, const DBF::Rune& rune) {
                 const auto& runeProperties = DBF::GetRuneProperties(rune);
                 std::map<DBF::Stat, float> stats = {{runeProperties.stat, 1}};
-                return stats;
+                item->UpdateStat(runeProperties.stat, 1);
             });
 
-        EXPECT_CALL(*runeApplication, ApplyRune(DBF::Rune(DBF::Rune::Ine)))
+        EXPECT_CALL(*runeApplication, ApplyRune(testing::_, DBF::Rune(DBF::Rune::Ine)))
             .Times(20);
-        EXPECT_CALL(*runeApplication, ApplyRune(DBF::Rune(DBF::Rune::Cri)))
+        EXPECT_CALL(*runeApplication, ApplyRune(testing::_, DBF::Rune(DBF::Rune::Cri)))
             .Times(7);
-        EXPECT_CALL(*runeApplication, ApplyRune(DBF::Rune(DBF::Rune::DoNeutre)))
+        EXPECT_CALL(*runeApplication, ApplyRune(testing::_, DBF::Rune(DBF::Rune::DoNeutre)))
             .Times(2);
 
         DBF::FM fm(item, wantedStats, runeApplication);
