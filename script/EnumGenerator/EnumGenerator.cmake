@@ -32,9 +32,12 @@ foreach(ENUM_JSON ${ARGN})
         COMMENT "Generating ${HEADER_OUT} and ${CPP_OUT} from ${ENUM_JSON}")
     add_library(${FILENAME} ${GENERATED_SOURCES})
     set_target_properties(${FILENAME} PROPERTIES PUBLIC_HEADER ${HEADER_OUT})
-    target_include_directories(${FILENAME} PUBLIC ${GENERATED_SOURCES_FOLDER})
+    target_include_directories(
+        ${FILENAME} PUBLIC
+        $<BUILD_INTERFACE:${GENERATED_SOURCES_FOLDER}>
+        $<INSTALL_INTERFACE:include>
+    )
     add_library(${CMAKE_PROJECT_NAME}::${FILENAME} ALIAS ${FILENAME})
-    
     install(TARGETS ${FILENAME}
         LIBRARY DESTINATION bin
         RUNTIME DESTINATION bin
