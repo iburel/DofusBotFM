@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.17)
 
 include(FetchContent)
 
@@ -36,32 +36,15 @@ add_compile_definitions(__cpp_lib_format=201907L)
 
 add_library(DBFLib)
 
+include(script/EnumGenerator/EnumGenerator.cmake)
+
 set(ENUM_JSONS
     "${CMAKE_CURRENT_SOURCE_DIR}/src/Rune.json"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/Stat.json")
 
-set(ENUM_GENERATOR_FOLDER "${CMAKE_CURRENT_SOURCE_DIR}/script/EnumGenerator")
+Generate_Enum(${ENUM_JSONS})
 
-set(ENUM_GENERATOR "${ENUM_GENERATOR_FOLDER}/EnumGenerator.py")
-set(ENUM_GENERATOR_DEPENDENCIES
-    ${PYTHON_SCRIPT_ENUM_GENERATOR}
-    "${ENUM_GENERATOR_FOLDER}/EnumPattern.h.in"
-    "${ENUM_GENERATOR_FOLDER}/EnumPattern.cpp.in")
-
-set(GENERATED_SOURCES_FOLDER "${CMAKE_CURRENT_BINARY_DIR}/generated-src")
-set(GENERATED_SOURCES)
-    
-foreach(ENUM_JSON ${ENUM_JSONS})
-    get_filename_component(FILENAME ${ENUM_JSON} NAME_WE)
-    set(HEADER_OUT ${GENERATED_SOURCES_FOLDER}/${FILENAME}.h)
-    set(CPP_OUT ${GENERATED_SOURCES_FOLDER}/${FILENAME}.cpp)
-    list(APPEND GENERATED_SOURCES ${HEADER_OUT} ${CPP_OUT})
-    add_custom_command(
-        OUTPUT ${HEADER_OUT} ${CPP_OUT}
-        DEPENDS ${ENUM_JSON} ${SCRIPT_DEPENDENCIES}
-        COMMAND python ${ENUM_GENERATOR} ${ENUM_JSON} ${GENERATED_SOURCES_FOLDER}
-        COMMENT "Generating ${HEADER_OUT} and ${CPP_OUT} from ${ENUM_JSON}")
-endforeach(ENUM_JSON)
+target_link_libraries(DBFLib PUBLIC DofusBotFM::Stat DofusBotFM::Rune)
 
 target_sources(
     DBFLib
@@ -78,8 +61,7 @@ target_sources(
         "${CMAKE_CURRENT_SOURCE_DIR}/src/StatsDensity.cpp"
         "${CMAKE_CURRENT_SOURCE_DIR}/src/StatsRunes.h"
         "${CMAKE_CURRENT_SOURCE_DIR}/src/StatsRunes.cpp"
-        
-        ${GENERATED_SOURCES})
+        )
 
 target_link_libraries(DBFLib PUBLIC nlohmann_json::nlohmann_json)
 
