@@ -12,6 +12,10 @@
 
 cmake_minimum_required(VERSION 3.17)
 
+if (NOT Python3_EXECUTABLE)
+    Find_Package(Python3 COMPONENTS Interpreter REQUIRED)
+endif()
+
 function(Generate_Enum)
 
 set(GENERATOR ${CMAKE_CURRENT_FUNCTION_LIST_DIR}/EnumGenerator.py)
@@ -28,7 +32,7 @@ foreach(ENUM_JSON ${ARGN})
     add_custom_command(
         OUTPUT ${HEADER_OUT} ${CPP_OUT}
         DEPENDS ${ENUM_JSON} ${GENERATOR} ${GENERATOR_HEADERS} ${GENERATOR_SOURCES}
-        COMMAND python ${GENERATOR} ${ENUM_JSON} ${GENERATED_SOURCES_FOLDER}
+        COMMAND ${Python3_EXECUTABLE} ${GENERATOR} ${ENUM_JSON} ${GENERATED_SOURCES_FOLDER}
         COMMENT "Generating ${HEADER_OUT} and ${CPP_OUT} from ${ENUM_JSON}")
     add_library(${FILENAME} ${GENERATED_SOURCES})
     set_target_properties(${FILENAME} PROPERTIES PUBLIC_HEADER ${HEADER_OUT})
