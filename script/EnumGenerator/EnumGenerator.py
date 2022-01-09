@@ -10,6 +10,8 @@ import json
 import os
 
 def patchFile(fileIn, fileOut, valuesToReplace):
+    os.makedirs(os.path.dirname(fileIn), exist_ok=True)
+    os.makedirs(os.path.dirname(fileOut), exist_ok=True)
     with open(fileIn, 'r') as fIn, open(fileOut, 'w') as fOut:
         strFile = fIn.read()
         for key, value in valuesToReplace.items():
@@ -26,6 +28,7 @@ def main():
     destination = args.destination
     scriptFolder = os.path.dirname(__file__)
 
+    os.makedirs(os.path.dirname(jsonFile), exist_ok=True)
     with open(jsonFile, 'r') as f:
         enumJson = json.load(f)
 
