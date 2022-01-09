@@ -34,7 +34,7 @@ foreach(ENUM_JSON ${ARGN})
         DEPENDS ${ENUM_JSON} ${GENERATOR} ${GENERATOR_HEADERS} ${GENERATOR_SOURCES}
         COMMAND ${Python3_EXECUTABLE} ${GENERATOR} ${ENUM_JSON} ${GENERATED_SOURCES_FOLDER}
         COMMENT "Generating ${HEADER_OUT} and ${CPP_OUT} from ${ENUM_JSON}")
-    add_library(${FILENAME} ${GENERATED_SOURCES})
+    add_library(${FILENAME} ${HEADER_OUT} ${CPP_OUT})
     set_target_properties(${FILENAME} PROPERTIES PUBLIC_HEADER ${HEADER_OUT})
     target_include_directories(
         ${FILENAME} PUBLIC
